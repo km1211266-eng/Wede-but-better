@@ -1,0 +1,703 @@
+/* ===========================================
+   Kwacha Coffee Roasters — style.css
+   Design note: "Kwacha" means "it is dawn" in
+   Bemba/Nyanja — the palette and the horizon
+   band that runs through every page are built
+   around first light breaking over the highveld.
+   =========================================== */
+
+/* -----------------------------------------
+   0. Tokens
+   ----------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Colour: dawn over the highveld */
+    --ink: #1C1712;           /* roasted-bean charcoal — header, footer, dark panels */
+    --ink-soft: #2B241B;      /* lighter charcoal for panels on dark ground */
+    --paper: #E7E1D2;         /* warm stone paper — main background */
+    --paper-light: #F1EDE2;   /* lighter paper for cards on paper ground */
+    --ember: #B4592B;         /* burnt copper — primary accent, CTAs */
+    --ember-dark: #8F441F;
+    --gold: #C0973C;          /* dawn gold — secondary accent, numerals */
+    --text: #241D16;
+    --text-on-dark: #EDE6D6;
+    --line: rgba(28, 23, 18, 0.15);
+    --line-on-dark: rgba(237, 230, 214, 0.18);
+
+    /* Type */
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Work Sans', -apple-system, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text);
+    background-color: var(--paper);
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+:focus-visible {
+    outline: 2px solid var(--ember);
+    outline-offset: 3px;
+}
+
+/* -----------------------------------------
+   1. Typography
+   ----------------------------------------- */
+h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--ink);
+    line-height: 1.15;
+    font-weight: 600;
+}
+
+h1 {
+    font-size: clamp(2.2rem, 4vw + 1rem, 3.4rem);
+    font-weight: 600;
+    max-width: 16ch;
+}
+
+h2 {
+    font-size: 1.7rem;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+p {
+    margin-bottom: 1rem;
+    max-width: 62ch;
+}
+
+.eyebrow {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--ember);
+    margin-bottom: 0.5rem;
+}
+
+/* -----------------------------------------
+   2. Horizon band — the recurring brand device
+   ----------------------------------------- */
+.horizon-band {
+    position: relative;
+    height: 8px;
+    width: 100%;
+    overflow: hidden;
+    background: linear-gradient(90deg, var(--ink) 0%, var(--ember-dark) 35%, var(--ember) 60%, var(--gold) 85%, var(--paper-light) 100%);
+}
+
+/* A single light sweeps the horizon band once per page load — the same
+   dawn-breaking moment repeated as the site's one recurring motion cue,
+   rather than scattered effects on every page. */
+.horizon-band::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 35%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(241, 237, 226, 0.85), transparent);
+    transform: translateX(-140%);
+    animation: dawn-sweep 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) 0.15s 1 both;
+}
+
+@keyframes dawn-sweep {
+    to { transform: translateX(385%); }
+}
+
+/* -----------------------------------------
+   3. Header & Navigation
+   ----------------------------------------- */
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 1.1rem 2rem;
+    background-color: var(--ink);
+}
+
+.logo {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--text-on-dark);
+    letter-spacing: 0.01em;
+}
+
+.logo .logo-mark {
+    color: var(--gold);
+    font-style: italic;
+}
+
+.main-nav ul {
+    display: flex;
+    gap: 2rem;
+}
+
+.main-nav a {
+    position: relative;
+    color: var(--text-on-dark);
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding-bottom: 0.3rem;
+    transition: color 0.2s ease;
+}
+
+.main-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background-color: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+}
+
+.main-nav a:hover,
+.main-nav a:focus-visible {
+    color: var(--gold);
+}
+
+.main-nav a:hover::after,
+.main-nav a:focus-visible::after {
+    transform: scaleX(1);
+}
+
+.main-nav a.active {
+    color: var(--gold);
+}
+
+.main-nav a.active::after {
+    transform: scaleX(1);
+}
+
+/* -----------------------------------------
+   4. Hero (home page)
+   ----------------------------------------- */
+.hero {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding: 3.5rem 2rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-text {
+    flex: 1 1 52%;
+}
+
+.hero-text p {
+    font-size: 1.05rem;
+    color: var(--text);
+}
+
+.hero-visual {
+    flex: 1 1 48%;
+}
+
+.dawn-illustration {
+    width: 100%;
+    height: auto;
+    border-radius: 2px;
+}
+
+/* The hero illustration plays one orchestrated sunrise on load: the sun
+   lifts into place, a glow blooms once behind it as it settles, then the
+   highveld ridgelines rise into frame after it — dawn breaking, in the
+   order it actually would. Nothing here loops or repeats. */
+.dawn-illustration .sun {
+    transform-origin: center;
+    animation: rise 1.7s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.dawn-illustration .sun-glow {
+    transform-origin: 300px 270px;
+    opacity: 0;
+    animation: glow-bloom 1.8s ease-out 1.1s 1 both;
+}
+
+.dawn-illustration .hill-back {
+    transform-origin: center;
+    animation: hill-rise 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) 1.3s both;
+}
+
+.dawn-illustration .hill-front {
+    transform-origin: center;
+    animation: hill-rise 1.1s cubic-bezier(0.22, 0.61, 0.36, 1) 1.55s both;
+}
+
+@keyframes rise {
+    from { transform: translateY(34px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes glow-bloom {
+    0% { opacity: 0; transform: scale(0.75); }
+    55% { opacity: 0.55; }
+    100% { opacity: 0; transform: scale(1.7); }
+}
+
+@keyframes hill-rise {
+    from { transform: translateY(26px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* -----------------------------------------
+   5. Buttons
+   ----------------------------------------- */
+.cta-button,
+.cta-button-small {
+    display: inline-block;
+    background-color: var(--ember);
+    color: var(--text-on-dark);
+    font-family: var(--font-body);
+    font-weight: 600;
+    border: 1px solid var(--ember);
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.cta-button:active,
+.cta-button-small:active {
+    transform: scale(0.97);
+}
+
+.cta-button {
+    padding: 0.85rem 1.8rem;
+    font-size: 1rem;
+}
+
+.cta-button-small {
+    padding: 0.5rem 1.1rem;
+    font-size: 0.88rem;
+    margin-top: 0.5rem;
+}
+
+.cta-button:hover,
+.cta-button-small:hover,
+.cta-button:focus-visible,
+.cta-button-small:focus-visible {
+    background-color: transparent;
+    color: var(--ember-dark);
+}
+
+/* -----------------------------------------
+   6. General sections
+   ----------------------------------------- */
+.intro,
+.content-block {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+}
+
+.page-header {
+    padding: 3rem 2rem 0.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.page-header .eyebrow {
+    display: block;
+}
+
+/* -----------------------------------------
+   7. Process list (roast steps) — numbered
+   because it IS a sequence
+   ----------------------------------------- */
+.process {
+    background-color: var(--ink);
+    padding: 3.5rem 2rem;
+}
+
+.process-inner {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.process-inner h2 {
+    color: var(--text-on-dark);
+}
+
+.process-steps {
+    display: flex;
+    flex-direction: column;
+}
+
+.process-step {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--line-on-dark);
+}
+
+.process-step:last-child {
+    border-bottom: 1px solid var(--line-on-dark);
+}
+
+.process-step .num {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1.4rem;
+    width: 2.4rem;
+    flex-shrink: 0;
+}
+
+.process-step h3 {
+    color: var(--text-on-dark);
+    margin-bottom: 0.2rem;
+}
+
+.process-step p {
+    color: var(--text-on-dark);
+    opacity: 0.85;
+    margin-bottom: 0;
+}
+
+/* -----------------------------------------
+   8. Editorial row list (used instead of a
+   card grid where items aren't a sequence)
+   ----------------------------------------- */
+.row-list {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 2rem 3rem;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1.4fr 2fr;
+    gap: 1.5rem;
+    padding: 1.6rem 0;
+    border-top: 1px solid var(--line);
+}
+
+.row:last-child {
+    border-bottom: 1px solid var(--line);
+}
+
+.row h3 {
+    margin-bottom: 0.3rem;
+}
+
+.row p {
+    margin-bottom: 0.4rem;
+}
+
+/* -----------------------------------------
+   9. Roast menu (products page)
+   ----------------------------------------- */
+.roast-menu {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem 2rem 3rem;
+}
+
+.roast-entry {
+    padding: 1.8rem 0;
+    border-top: 1px solid var(--line);
+}
+
+.roast-entry:last-child {
+    border-bottom: 1px solid var(--line);
+}
+
+.roast-entry-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.roast-entry-head h3 {
+    margin-bottom: 0;
+}
+
+.roast-entry .price {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--ember);
+    font-size: 1.1rem;
+    white-space: nowrap;
+}
+
+.roast-meta {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    opacity: 0.75;
+    margin: 0.3rem 0 0.6rem;
+    letter-spacing: 0.01em;
+}
+
+/* -----------------------------------------
+   10. Team (about page)
+   ----------------------------------------- */
+.team-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    margin-top: 0.5rem;
+}
+
+.team-member {
+    display: flex;
+    gap: 1.2rem;
+    align-items: baseline;
+    border-left: 2px solid var(--gold);
+    padding-left: 1rem;
+}
+
+.team-member .role {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--ember);
+    flex: 0 0 auto;
+    min-width: 13rem;
+}
+
+/* -----------------------------------------
+   11. Forms
+   ----------------------------------------- */
+.enquiry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    max-width: 480px;
+}
+
+.enquiry-form label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 0.7rem;
+}
+
+.enquiry-form input,
+.enquiry-form textarea {
+    padding: 0.7rem 0.6rem;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    background-color: transparent;
+    border-radius: 0;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--text);
+    transition: border-color 0.2s ease;
+}
+
+.enquiry-form input:focus,
+.enquiry-form textarea:focus {
+    outline: none;
+    border-bottom-color: var(--ember);
+}
+
+.enquiry-form button {
+    align-self: flex-start;
+    margin-top: 1.3rem;
+}
+
+.visit-details {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.visit-details div {
+    flex: 1 1 200px;
+}
+
+.visit-details .label {
+    font-size: 0.82rem;
+    color: var(--ember);
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+/* -----------------------------------------
+   12. FAQ accordion
+   ----------------------------------------- */
+.faq-list {
+    max-width: 720px;
+}
+
+.faq-item {
+    border-top: 1px solid var(--line);
+    padding: 0.2rem 0;
+}
+
+.faq-item:last-child {
+    border-bottom: 1px solid var(--line);
+}
+
+.faq-item summary {
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--ink);
+    padding: 1rem 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::after {
+    content: "+";
+    font-family: var(--font-body);
+    font-size: 1.4rem;
+    color: var(--ember);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.faq-item[open] summary::after {
+    content: "–";
+}
+
+/* Height is animated in JS (script.js): each answer is wrapped in
+   .faq-body so opening/closing can transition smoothly instead of
+   snapping instantly, the way native <details> does by default. */
+.faq-body {
+    overflow: hidden;
+    transition: max-height 0.32s ease;
+}
+
+.faq-item p {
+    padding-bottom: 1.1rem;
+    color: var(--text);
+}
+
+/* -----------------------------------------
+   13. Footer
+   ----------------------------------------- */
+.site-footer {
+    text-align: left;
+    padding: 1.8rem 2rem;
+    background-color: var(--ink);
+    color: var(--text-on-dark);
+    margin-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+}
+
+.site-footer .footer-tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--gold);
+}
+
+/* -----------------------------------------
+   14. Responsive breakpoints
+   ----------------------------------------- */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        padding: 2.5rem 1.5rem 3rem;
+    }
+
+    .main-nav ul {
+        gap: 1.1rem;
+        flex-wrap: wrap;
+    }
+
+    .row {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+    }
+
+    .team-member {
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    .team-member .role {
+        min-width: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+
+    .main-nav ul {
+        gap: 0.6rem 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .cta-button {
+        width: 100%;
+        text-align: center;
+    }
+
+    .site-footer {
+        flex-direction: column;
+    }
+
+    .roast-entry-head {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
